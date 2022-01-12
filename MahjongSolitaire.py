@@ -294,7 +294,6 @@ class Board():
         if max_stack_tiles >= 1:
             layer = self.__num_stack_tiles[row][col]
             if layer < max_stack_tiles:
-                self.__num_stack_tiles[row][col] += 1
                 ret = (layer, row, col)
 
         return ret
@@ -302,6 +301,7 @@ class Board():
     def stack_tile(self, row, col):
         (ret_layer, ret_row, ret_col) = self.can_stack(row, col)
         if ret_row != -1:
+            self.__num_stack_tiles[row][col] += 1
             return (ret_layer, ret_row, ret_col)
 
         if row == self.TOP_ROW and col == self.TOP_COL:
