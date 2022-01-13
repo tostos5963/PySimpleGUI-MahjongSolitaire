@@ -35,3 +35,10 @@ PySimpleGUI を使用して作成した麻雀ソリティア (Mahjong Solitaire)
 【Mac】
 
     動作すると思いますが所持していないため確認できていません。
+
+ソースコードの説明
+------------------
+以下のURLでソースコードの説明をしています。
+https://naotoshisami.com/2022/01/pysimplegui-python-gui-mahjongsolitaire/
+
+
