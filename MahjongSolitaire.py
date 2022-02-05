@@ -438,91 +438,111 @@ class Board():
         return sum(map(sum, self.__num_stack_tiles))
 
     def make_game(self):
-        key_list = list(tile_imgs.keys()) + list(tile_imgs.keys())
-        random.shuffle(key_list)
+        self.key_list = list(tile_imgs.keys()) + list(tile_imgs.keys())
+        random.shuffle(self.key_list)
 
-        # タイルを置く順番.  Order of stacking tiles.
-        pattern_list = []
-        pattern_list.append([(14, 20), (0, 0), (0, 2), (14, 18), (2, 4), (12, 10),
-                            (4, 16), (6, 8), (8, 6), (10, 12), (0, 4), (14, 16),
-                            (6, 10), (2, 6), (12, 8), (0, 6), (10, 10), (4, 14),
-                            (14, 14), (4, 18), (14, 12), (0, 8), (10, 8), (2, 8),
-                            (8, 8), (10, 6), (8, 10), (4, 12), (0, 10), (12, 12),
-                            (6, 12), (14, 10), (4, 10), (6, 12), (4, 8), (0, 12),
-                            (2, 10), (8, 12), (10, 10), (2, 12), (2, 14), (6, 10),
-                            (6, 14), (8, 10), (0, 14), (8, 12), (4, 10), (12, 14),
-                            (4, 12), (10, 12), (2, 16), (8, 14), (0, 16), (14, 8),
-                            (10, 14), (4, 6), (2, 8), (10, 16), (2, 10), (12, 12),
-                            (12, 6), (2, 12), (12, 10), (6, 16), (12, 16), (2, 18),
-                            (0, 18), (14, 6), (0, 20), (4, 4), (6, 6), (4, 12),
-                            (8, 16), (2, 14), (8, 14), (14, 4), (6, 14), (12, 8),
-                            (6, 8), (12, 18), (6, 12), (2, 6), (6, 4), (10, 18),
-                            (12, 4), (6, 18), (4, 14), (8, 18), (12, 14), (6, 20),
-                            (14, 2), (8, 20), (10, 14), (8, 4), (10, 4), (4, 8),
-                            (8, 8), (4, 10), (12, 16), (8, 2), (7, 22), (6, 2),
-                            (7, 0), (10, 16), (2, 16), (6, 10), (4, 6), (8, 16),
-                            (8, 12), (10, 8), (6, 6), (4, 16), (12, 6), (6, 12),
-                            (6, 16), (6, 10), (6, 4), (8, 10), (6, 18), (8, 6),
-                            (4, 8), (8, 18), (4, 14), (8, 4), (10, 6), (6, 14),
-                            (6, 8), (8, 12), (10, 12), (8, 10), (7, 11), (8, 8),
-                            (10, 14), (8, 14), (10, 10), (10, 8)])
+        ptn_tbl = {}
+        ptn_tbl[0] = [(0, 10), (0, 12), (0, 8), (0, 14), (0, 6), (0, 16), (0, 4),
+                      (0, 18), (0, 2), (0, 20), (0, 0)]
+        ptn_tbl[2] = [(2, 4), (2, 6), (2, 6), (2, 8), (2, 8), (2, 10), (2, 10),
+                      (2, 12), (2, 12), (2, 14), (2, 14), (2, 16), (2, 16), (2, 18)]
+        ptn_tbl[4] = [(4, 18), (4, 16), (4, 14), (4, 16), (4, 14), (4, 12), (4, 14),
+                      (4, 12), (4, 10), (4, 12), (4, 10), (4, 8), (4, 10), (4, 8),
+                      (4, 6), (4, 4), (4, 8), (4, 6)]
+        ptn_tbl[6] = [(6, 10), (6, 12), (6, 8), (6, 10), (6, 12), (6, 8), (6, 10),
+                      (6, 12), (6, 14), (6, 6), (6, 4), (6, 10), (6, 12), (6, 14),
+                      (6, 8), (6, 16), (6, 14), (6, 16), (6, 6), (6, 18), (6, 4),
+                      (6, 18), (6, 2), (6, 20)]
+        ptn_tbl[8] = [(8, 12), (8, 10), (8, 8), (8, 8), (8, 10), (8, 12), (8, 14),
+                      (8, 6), (8, 4), (8, 16), (8, 12), (8, 6), (8, 10), (8, 2),
+                      (8, 4), (8, 8), (8, 14), (8, 10), (8, 12), (8, 16), (8, 18),
+                      (8, 20), (8, 18), (8, 14)]
+        ptn_tbl[10] = [(10, 12), (10, 10), (10, 8), (10, 6), (10, 14), (10, 16),
+                       (10, 4), (10, 18), (10, 6), (10, 8), (10, 10), (10, 12),
+                       (10, 14), (10, 16), (10, 14), (10, 12), (10, 10), (10, 8)]
+        ptn_tbl[12] = [(12, 10), (12, 12), (12, 8), (12, 14), (12, 6), (12, 16),
+                       (12, 4), (12, 18), (12, 12), (12, 10), (12, 14), (12, 8),
+                       (12, 16), (12, 6)]
+        ptn_tbl[14] = [(14, 16), (14, 14), (14, 12), (14, 18), (14, 10), (14, 8),
+                       (14, 6), (14, 20), (14, 4), (14, 2)]
 
-        pattern_list.append([(0, 4), (14, 12), (2, 6), (12, 10), (4, 10),
-                            (6, 12), (8, 8), (10, 10), (2, 8), (10, 8), (4, 8),
-                            (14, 10), (6, 10), (12, 8), (0, 6), (8, 10), (0, 8),
-                            (6, 8), (2, 10), (8, 6), (4, 10), (10, 12), (4, 6),
-                            (4, 12), (14, 8), (0, 10), (2, 12), (0, 12), (6, 8),
-                            (0, 14), (6, 6), (0, 16), (10, 6), (6, 10), (12, 6),
-                            (4, 8), (10, 10), (14, 6), (8, 8), (2, 14), (14, 4),
-                            (4, 14), (8, 10), (12, 12), (6, 8), (8, 12), (12, 14),
-                            (14, 14), (6, 12), (14, 16), (2, 8), (6, 14), (12, 16),
-                            (2, 10), (10, 14), (6, 10), (12, 18), (2, 12), (12, 4),
-                            (4, 12), (10, 8), (4, 14), (10, 12), (2, 16), (14, 2),
-                            (8, 14), (4, 16), (8, 12), (14, 18), (10, 16), (6, 16),
-                            (8, 10), (6, 4), (10, 18), (8, 4), (2, 14), (4, 12),
-                            (10, 4), (2, 18), (4, 4), (6, 12), (2, 4), (6, 18),
-                            (4, 18), (8, 12), (0, 18), (14, 20), (6, 14), (8, 16),
-                            (2, 16), (8, 18), (8, 14), (4, 16), (10, 14), (8, 8),
-                            (6, 16), (8, 14), (4, 6), (8, 16), (6, 6), (4, 14),
-                            (8, 6), (2, 6), (10, 6), (4, 10), (10, 16), (0, 20),
-                            (6, 20), (0, 2), (8, 20), (6, 10), (4, 8), (7, 22),
-                            (6, 18), (8, 2), (8, 18), (10, 8), (12, 10), (6, 12),
-                            (12, 12), (6, 2), (7, 0), (6, 4), (8, 4), (6, 14),
-                            (10, 10), (12, 8), (8, 10), (12, 14), (8, 12), (12, 6),
-                            (10, 12), (12, 16), (10, 14), (0, 0), (7, 11)])
+        # (7, 0), (7, 11), (7, 22)
+        pos7_0 = False
+        pos7_11 = False
+        pos7_22 = False
 
-        pattern_list.append([(6, 10), (8, 8), (4, 12), (4, 8), (8, 12),
-                            (2, 12), (6, 12), (6, 8), (10, 8), (4, 10), (8, 10),
-                            (0, 10), (10, 10), (0, 12), (8, 6), (10, 12), (6, 14),
-                            (10, 6), (4, 14), (12, 10), (2, 10), (14, 12), (2, 8),
-                            (12, 12), (0, 14), (14, 10), (2, 6), (14, 14), (4, 6),
-                            (2, 14), (0, 16), (8, 4), (0, 18), (14, 16), (0, 8),
-                            (12, 8), (2, 4), (12, 14), (2, 16), (6, 10), (0, 6),
-                            (8, 12), (14, 8), (8, 14), (12, 6), (6, 12), (12, 4),
-                            (4, 12), (10, 14), (4, 10), (10, 16), (4, 10), (8, 16),
-                            (4, 8), (4, 16), (8, 10), (10, 12), (0, 4), (10, 14),
-                            (14, 6), (12, 12), (6, 10), (12, 16), (6, 8), (12, 18),
-                            (8, 8), (14, 18), (10, 10), (14, 4), (10, 8), (14, 2),
-                            (12, 10), (6, 16), (4, 14), (2, 18), (6, 14), (0, 2),
-                            (8, 14), (0, 20), (8, 12), (0, 0), (6, 6), (4, 18),
-                            (8, 10), (14, 20), (6, 12), (10, 4), (4, 12), (10, 18),
-                            (4, 4), (6, 18), (6, 10), (8, 18), (6, 4), (6, 12),
-                            (6, 20), (4, 16), (8, 2), (6, 16), (6, 2), (12, 14),
-                            (7, 0), (12, 8), (8, 16), (4, 6), (2, 12), (10, 16),
-                            (2, 10), (10, 14), (2, 14), (12, 16), (6, 14), (12, 6),
-                            (2, 16), (6, 6), (2, 8), (8, 6), (2, 6), (8, 14),
-                            (4, 14), (8, 8), (4, 8), (8, 12), (6, 8), (10, 6),
-                            (10, 12), (8, 20), (8, 10), (7, 22), (10, 10), (6, 18),
-                            (10, 8), (8, 18), (6, 4), (8, 4), (7, 11)])
+        # pos_list : タイルを置く順番.  Order of stacking tiles.
+        self.pos_list = []
 
-        self.pattern_idx += 1
-        if self.pattern_idx >= len(pattern_list):
-            self.pattern_idx = 0
+        num_pos = {}
+        for row in ptn_tbl.keys():
+            for pos in ptn_tbl[row]:
+                num_pos[pos] = 0
+
+        while True:
+            row1 = -1
+            if pos7_0 == False:
+                if num_pos[(6, 2)] == 1 and num_pos[(8, 2)] == 1:
+                    self.pos_list.append((7, 0))
+                    row1 = 7
+                    pos7_0 = True
+
+            elif pos7_22 == False:
+                if num_pos[(6, 20)] == 1 and num_pos[(8, 20)] == 1:
+                    self.pos_list.append((7, 22))
+                    row1 = 7
+                    pos7_22 = True
+
+            elif pos7_11 == False:
+                if num_pos[(6, 10)] == 4 and num_pos[(6, 12)] == 4 and num_pos[(8, 10)] == 4 and num_pos[(8, 12)] == 4:
+                    self.pos_list.append((7, 11))
+                    row1 = 7
+                    pos7_11 = True
+
+            if row1 == -1:
+                row_lst = []
+                for row in ptn_tbl.keys():
+                    row_lst += [row] * len(ptn_tbl[row])
+                if len(row_lst) == 0:
+                    break
+                row_idx = random.randint(0, len(row_lst) - 1)
+                row1 = row_lst[row_idx]
+
+            row_lst = []
+            for row in ptn_tbl.keys():
+                if row != row1:
+                    row_lst += [row] * len(ptn_tbl[row])
+            if len(row_lst) == 0:
+                break
+            row_idx = random.randint(0, len(row_lst) - 1)
+            row2 = row_lst[row_idx]
+
+            if row1 != 7:
+                pos1 = ptn_tbl[row1].pop(0)
+                self.pos_list.append(pos1)
+                num_pos[pos1] += 1
+
+            pos2 = ptn_tbl[row2].pop(0)
+            self.pos_list.append(pos2)
+            num_pos[pos2] += 1
+
+        for row in ptn_tbl.keys():
+            while len(ptn_tbl[row]) != 0:
+                self.pos_list.append(ptn_tbl[row].pop(0))
+
+        if pos7_0 == False:
+            self.pos_list.append((7, 0))
+
+        if pos7_11 == False:
+            self.pos_list.append((7, 11))
+
+        if pos7_22 == False:
+            self.pos_list.append((7, 22))
 
         tile_list = []
-        for pos_idx in range(0, len(pattern_list[self.pattern_idx]), 2):
-            tile_id = key_list[int(pos_idx / 2)]
-            for pos in [pattern_list[self.pattern_idx][pos_idx], pattern_list[self.pattern_idx][pos_idx + 1]]:
+        for pos_idx in range(0, len(self.pos_list), 2):
+            tile_id = self.key_list[int(pos_idx / 2)]
+            for pos in [self.pos_list[pos_idx], self.pos_list[pos_idx + 1]]:
                 row, col = pos
                 (ret_layer, ret_row, ret_col) = self.stack_tile(row, col)
                 if ret_row != -1:
@@ -533,6 +553,20 @@ class Board():
         tile_list.sort()
         return tile_list
 
+    def retry_game(self):
+        tile_list = []
+        for pos_idx in range(0, len(self.pos_list), 2):
+            tile_id = self.key_list[int(pos_idx / 2)]
+            for pos in [self.pos_list[pos_idx], self.pos_list[pos_idx + 1]]:
+                row, col = pos
+                (ret_layer, ret_row, ret_col) = self.stack_tile(row, col)
+                if ret_row != -1:
+                    tile = Tile(tile_id)
+                    tile.setLayerPos(ret_layer, (ret_row, ret_col))
+                    tile_list.append(tile)
+
+        tile_list.sort()
+        return tile_list
 
 class MahjongSolitaire():
     def __init__(self):
@@ -546,11 +580,11 @@ class MahjongSolitaire():
 
         self.enable_mouse_click = False
         self.complete = False
-        self.pattern_idx = random.randrange(0, 3)
 
         random.seed()
 
-        self.layout = [[sg.Button('New Game', pad=(cell_pad_x, (cell_pad_y, 0)), font=font) ],
+        self.layout = [[sg.Button('New Game', pad=(cell_pad_x, (cell_pad_y, 0)), font=font),
+                        sg.Button('Retry', pad=(cell_pad_x, (cell_pad_y, 0)), font=font) ],
                        [sg.Graph(canvas_size=(graph_w, graph_h),
                         graph_bottom_left=(0, graph_h), key='Graph', pad=(0,0), enable_events=True,
                         graph_top_right=(graph_w, 0), drag_submits=True)]]
@@ -574,6 +608,17 @@ class MahjongSolitaire():
 
         self.select_img_id = self.draw.DrawImage(data=select_img, location=(-100, -100))
 
+    def retry(self):
+        self.draw.Erase()
+        self.complete = False
+
+        self.board.clear()
+        self.tile_list = self.board.retry_game()
+
+        for tile in self.tile_list:
+            tile.img_id = self.draw.DrawImage(data=tile_imgs[tile.tile_id], location=tile.xy)
+
+        self.select_img_id = self.draw.DrawImage(data=select_img, location=(-100, -100))
 
     def onclick(self, click_x, click_y):
         if self.enable_mouse_click == False:
@@ -644,6 +689,9 @@ class MahjongSolitaire():
 
             if event == 'New Game':
                 self.new_game()
+
+            if event == 'Retry':
+                self.retry()
 
             elif event in '-timeout-':
                 self.enable_mouse_click = True
