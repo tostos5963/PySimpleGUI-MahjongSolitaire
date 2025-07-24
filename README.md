@@ -1,6 +1,6 @@
 # PySimpleGUI-MahjongSolitaire
 
-PySimpleGUI を使用して作成した麻雀ソリティア (Mahjong Solitaire) です。
+FreeSimpleGUI(PySimpleGUI) を使用して作成した麻雀ソリティア (Mahjong Solitaire) です。
 
 ![PySimpleGUI-MahjongSolitaire](https://user-images.githubusercontent.com/15520094/148734686-e07e6349-84d2-459e-a348-17299d092485.gif)
 
@@ -15,13 +15,13 @@ PySimpleGUI を使用して作成した麻雀ソリティア (Mahjong Solitaire)
 
 【Windows】
 
-    pip install pysimplegui
+    pip install FreeSimpleGUI
 
     python MahjongSolitaire.py
 
 【Linux(ubuntu)】
 
-    pip3 install pysimplegui
+    pip3 install FreeSimpleGUI
 
     python3 MahjongSolitaire.py
 
